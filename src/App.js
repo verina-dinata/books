@@ -12,6 +12,10 @@ function App() {
       setBooks(response.data);
   };
 
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
   const createBook = async (title) => {
     const response = await axios.post('http://localhost:3001/books', {
       title
@@ -32,10 +36,14 @@ function App() {
     setBooks(updatedBooks);
   };
 
-  const editBookById = (id, title) => {
+  const editBookById = async (id, title) => {
+    const response = await axios.put(`http://localhost:3001/books/${id}`, {
+      title
+    })
+
     const updatedBooks = books.map((book) => {
       if (book.id === id) {
-        return {...book, title: title}
+        return {...book, ...response.data}
       };
       return book
     });
